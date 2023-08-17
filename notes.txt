@@ -1,0 +1,48 @@
+Q. In DRF the type of Response(data) is not json, then how do I get a json response 
+at my front end? What is happening in between?
+
+In Django Rest Framework (DRF), when you create an API view and return a Response 
+object with some data, the data itself is not directly returned as JSON. Instead, 
+DRF performs some steps behind the scenes to convert the data into JSON format 
+before sending it to the frontend.
+
+Let's break down the process of what happens in between:
+
+    Data Serialization: 
+    When you return data from your API view using a Response 
+    object, DRF internally uses serializers to convert complex data types (like 
+    Django model instances) into a format that can be easily converted to JSON. 
+    Serialization is the process of converting complex data types into a format 
+    that can be stored, transmitted, or displayed. DRF provides powerful 
+    serialization tools that allow you to define how your data should be 
+    converted.
+
+    Content Negotiation: 
+    DRF employs content negotiation to determine the format in which the response 
+    should be returned. Content negotiation is the process of selecting the best 
+    representation of a resource based on the client's preferences, as indicated 
+    by the request's headers. Typically, when you make an API request, your 
+    request's Accept header specifies the desired response format (e.g., JSON, 
+    XML, etc.).
+
+    JSON Rendering: 
+    Once the data is serialized, and content negotiation determines that JSON is 
+    the desired format, DRF uses its JSON renderer to convert the serialized data
+    into a JSON response. The JSON renderer takes care of serializing the data 
+    into JSON format and setting the appropriate response headers to indicate that
+    the response content is in JSON format.
+
+    HTTP Response: 
+    Finally, the JSON-rendered data is included in the HTTP response object that 
+    gets sent back to the frontend. The frontend, whether it's a web browser, a 
+    mobile app, or any other client, receives this response and can parse the 
+    JSON content to work with the data.
+
+So, even though you might not explicitly see the JSON conversion code in your DRF
+view, DRF's serialization, content negotiation, and rendering processes work 
+together to ensure that the response data is converted to JSON format before 
+reaching the frontend. This abstraction allows you to focus on defining your API 
+endpoints and business logic without worrying about the specifics of data 
+conversion and response formatting.
+
+-----------------------------------------------------------------------------------
