@@ -8,11 +8,14 @@ from django.forms.models import model_to_dict
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
-# Create your views here.
-@api_view(["GET"])
+# @api_view(["GET"])
+@api_view(["POST"])
 def api_home(request, *args, **kwargs):
+    """
+    -------------------------GET REQUEST--------------------------------
     # The model_to_dict implementation is commented out
     # model_data = Product.objects.all().order_by("?").first()
+
     instance = Product.objects.all().order_by("?").first()
 
     data = {}
@@ -40,7 +43,15 @@ def api_home(request, *args, **kwargs):
         
         data = ProductSerializer(instance).data
         
+    """
 
-    return Response(data)
+    serializer = ProductSerializer(data=request.data)
+    
+    if serializer.is_valid(raise_exception=True):
+        # This raises detailed exceptions as to which field has encountered
+        # the error.
+        print(serializer.data)
+        return Response(serializer.data)
+    return Response({"invalid" : "Not valid/good data."}, status=400)
     # Removed as it is not used in a rest framework view
     # return JsonResponse(data) 
