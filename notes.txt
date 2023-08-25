@@ -1,4 +1,4 @@
-Q. In DRF the type of Response(data) is not json, then how do I get a json response 
+Q1. In DRF the type of Response(data) is not json, then how do I get a json response 
 at my front end? What is happening in between?
 
 In Django Rest Framework (DRF), when you create an API view and return a Response 
@@ -46,3 +46,45 @@ endpoints and business logic without worrying about the specifics of data
 conversion and response formatting.
 
 -----------------------------------------------------------------------------------
+
+Q2. If I remove the "perform_create()" function then even the class based view 
+is returning the data I sent to it via POST request. Why does it do that? I am 
+clearly not saving the data not returning anything.
+ChatGPT
+
+When you send a POST request to the ProductCreateAPIView, the Django REST 
+framework's generic views have default behavior that automatically handles the 
+creation process for you, even if you remove the perform_create method. This 
+behavior is part of the framework's design to simplify the common tasks involved 
+in creating objects through APIs. Let's break down what's happening in this 
+scenario:
+
+    Serializer Validation:
+        When a POST request is made, the incoming data is validated using the 
+        serializer you've defined (ProductSerializer in this case).
+        If the data is valid, a serializer instance is created with the 
+        validated data.
+
+    Object Creation and Saving:
+        Since you haven't overridden the perform_create method, the default 
+        implementation of CreateAPIView is used.
+        This default implementation includes creating a new instance of the model 
+        (Product), using the validated data from the serializer.
+        The instance is then saved to the database.
+
+    Response Generation:
+        After the instance is saved, the framework automatically generates an HTTP 
+        response indicating success.
+        The response includes the serialized data of the created instance in the 
+        response body. This data is generated using the same serializer you 
+        provided.
+
+In summary, even without the explicit perform_create method, the default 
+behavior of the CreateAPIView is to create the object and return its serialized 
+representation in the response. This is because the framework aims to minimize 
+the repetitive code required for common CRUD operations.
+
+If you choose to override perform_create, you have the flexibility to customize 
+the creation process, attach additional attributes, or perform additional actions 
+before the object is saved. If the default behavior suits your needs, you don't 
+necessarily need to implement perform_create.
