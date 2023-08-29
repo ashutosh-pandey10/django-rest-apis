@@ -4,7 +4,7 @@ endpoint = "http://localhost:8000/api/products/"
 
 data = {
     "title":"A whole new title",
-    "price" : 234.08
+    "price" : 1990.08
 }
 get_response = requests.post(endpoint, json=data)
 

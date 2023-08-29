@@ -88,3 +88,34 @@ If you choose to override perform_create, you have the flexibility to customize
 the creation process, attach additional attributes, or perform additional actions 
 before the object is saved. If the default behavior suits your needs, you don't 
 necessarily need to implement perform_create.
+
+--------------------------------------------------------------------------------
+
+Q3. In product/permissions.py, for assigning Django permissions, ".is_staff" what 
+does it refer to? Is it pointing to a user created in Django Admin panel with 
+name "staff"? If not what is it?
+
+In Django, the .is_staff attribute is not directly related to a user created with
+the name "staff" in the Django Admin panel. Instead, it is a built-in attribute 
+of the User model provided by Django's authentication system.
+
+The is_staff attribute is a boolean flag that indicates whether a user is 
+considered staff or not. In the context of Django's authentication system, a 
+staff user typically has higher privileges than regular users. Staff users are 
+often associated with administrative tasks and can access certain restricted 
+areas of the application, such as the Django admin interface. They might have 
+permissions to perform administrative actions like managing models, adding or 
+editing records, and so on.
+
+So, the code snippet you provided is checking whether the user is a staff member 
+using the .is_staff attribute. If the user is a staff member, it then proceeds 
+to check whether the user has specific permissions related to the "product" model
+, such as creating, viewing, changing, or deleting products.
+
+To summarize, .is_staff is a built-in attribute of the User model in Django, used 
+to identify staff users who might have higher privileges within the application. 
+It's not related to a user named "staff" created in the Django Admin panel.
+
+--------------------------------------------------------------------------------
+
+

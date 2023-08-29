@@ -1,8 +1,8 @@
-from rest_framework import generics
+from rest_framework import generics, authentication, permissions
 
 from .models import Product
 from .serializers import ProductSerializer
-
+from .permissions import IsStaffEditorPermission
 '''
 4.
 '''
@@ -14,13 +14,16 @@ class ProductDetailAPIView(generics.RetrieveAPIView):
     serializer_class = ProductSerializer
     # Lookup is done over primary key "pk"
 
-class ProductCreateAPIView(generics.CreateAPIView):
+class ProductListCreateAPIView(generics.ListCreateAPIView):
     '''
     5.
     '''
     # This view class can totally be changed to handle GET requests just by 
     # making it ProductListCreateAPIView and it will return all the 
     # data that is present in the database, since we're creating a query set.
+    # 
+    # If it were only CreateAPIView, it would have handled only the 
+    # GET requests.
     '''
     1.
         Did not understand why the hell is it returning the data even when
@@ -36,6 +39,14 @@ class ProductCreateAPIView(generics.CreateAPIView):
     queryset = Product.objects.all() # This retrieves only 1 row/item
     serializer_class = ProductSerializer
 
+    authentication_classes = [authentication.SessionAuthentication]
+    # Make sure the in admin view, the user has Staff member check box ticked
+    # else, it will not be recognised by the .IsAdminUser flag.
+    '''
+        8. Custom Permissions
+    '''
+    permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission]
+    
     def perform_create(self, serializer):
         '''
         3.
@@ -54,6 +65,9 @@ class ProductCreateAPIView(generics.CreateAPIView):
 
 
 class ProductUpdateAPIView(generics.UpdateAPIView):
+    '''
+        6. UpdateAPIView, allows only PUT methods
+    '''
     queryset = Product.objects.all() # This retrieves only 1 row/item
     serializer_class = ProductSerializer
     lookup_field = "pk"
@@ -68,6 +82,9 @@ class ProductUpdateAPIView(generics.UpdateAPIView):
 
 
 class ProductDestroyAPIView(generics.DestroyAPIView):
+    '''
+        7. DeleteAPIView, allows only DELETE methods
+    '''
     queryset = Product.objects.all() # This retrieves only 1 row/item
     serializer_class = ProductSerializer
     lookup_field = "pk"
