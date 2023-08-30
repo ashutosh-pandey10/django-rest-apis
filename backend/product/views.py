@@ -3,6 +3,7 @@ from rest_framework import generics, authentication, permissions
 from .models import Product
 from .serializers import ProductSerializer
 from .permissions import IsStaffEditorPermission
+from api.authentication import TokenAuthentication
 '''
 4.
 '''
@@ -39,7 +40,10 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all() # This retrieves only 1 row/item
     serializer_class = ProductSerializer
 
-    authentication_classes = [authentication.SessionAuthentication]
+    authentication_classes = [
+        authentication.SessionAuthentication,
+        TokenAuthentication
+    ]
     # Make sure the in admin view, the user has Staff member check box ticked
     # else, it will not be recognised by the .IsAdminUser flag.
     '''
