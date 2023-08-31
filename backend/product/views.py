@@ -40,10 +40,15 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all() # This retrieves only 1 row/item
     serializer_class = ProductSerializer
 
-    authentication_classes = [
-        authentication.SessionAuthentication,
-        TokenAuthentication
-    ]
+    """
+        This can now be commented out as we have added it as default on the 
+        setting.py of root application 'cfehome'
+        
+        authentication_classes = [
+            authentication.SessionAuthentication,
+            TokenAuthentication
+        ]
+    """
     # Make sure the in admin view, the user has Staff member check box ticked
     # else, it will not be recognised by the .IsAdminUser flag.
     '''
